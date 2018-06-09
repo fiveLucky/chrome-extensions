@@ -86,6 +86,7 @@ function format(mockJson) {
       item.children.forEach(function (apiData, index) {
         var apiJson = {};
         var parseJson = {};
+        // TODO 这里有坑，数据有瑕疵，导致输出数据丢失
         try {
           parseJson = JSON.parse(apiData.content);
         } catch (error) {
