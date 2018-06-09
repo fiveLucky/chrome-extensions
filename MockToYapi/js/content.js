@@ -134,7 +134,8 @@ function format(mockJson) {
       yapiJson.add_time = Date.now();
       yapiJson.up_time = Date.now();
       yapiJson.index = index;
-      getItem(item.children, yapiArr)
+      getItem(item.children, yapiJson.list)
+      yapiArr.push(yapiJson);
     })
 
   });
