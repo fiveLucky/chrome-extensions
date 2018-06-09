@@ -23,13 +23,22 @@ function getResBody(arr) {
       type: item.type,
       description: item.description,
     }
+    if (item.type === "array") {
+      resBody.properties[item.name].items = {};
+    }
     // 默认全部required
     resBody.required.push(item.name)
     // 递归
     if (item.children.length !== 0) {
-      resBody.properties[item.name].properties = getResBody(item.children).properties;
-      resBody.properties[item.name].required = getResBody(item.children).required;
+      if (item.type === "array") {
+        resBody.properties[item.name].items.properties = getResBody(item.children).properties;
+        resBody.properties[item.name].items.required = getResBody(item.children).required;
+      } else {
+        resBody.properties[item.name].properties = getResBody(item.children).properties;
+        resBody.properties[item.name].required = getResBody(item.children).required;
+      }
       resBody.properties[item.name].type = item.type;
+
     }
   })
   return resBody;
