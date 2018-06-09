@@ -78,10 +78,52 @@ function getProperties(arr) {
   return properties;
 }
 
+function getItem(arr, container) {
+  var list = [];
+  var project_id = window.location.pathname.split('/')[2]
+  arr.forEach(function (apiData, index) {
+    var apiJson = {};
+    var parseJson = {};
+    if (apiData.children.length !== 0 || apiData.content === undefined) {
+      getItem(apiData.children, container);
+      debugger
+    } else {
+      parseJson = JSON.parse(apiData.content);
+      apiJson._id = apiData.id;
+      apiJson.method = parseJson.requestMethod;
+      apiJson.catid = 0;
+      apiJson.title = apiData.name;
+      apiJson.path = apiData.mockPath;
+      apiJson.project_id = project_id;
+      apiJson.res_body_type = "json";
+      apiJson.desc = apiData.name;
+      apiJson.res_body = JSON.stringify(getResBody(parseJson.responseArgs));
+      apiJson.__v = 0;
+      apiJson.req_body_type = "json";
+      apiJson.req_body_other = JSON.stringify(getReqBody(parseJson.requestArgs));
+      apiJson.api_opened = false;
+      apiJson.res_body_is_json_schema = true;
+      apiJson.req_body_is_json_schema = true;
+      apiJson.req_body_form = [];
+      apiJson.req_params = [];
+      apiJson.req_headers = [];
+      apiJson.type = "static";
+      apiJson.protocol_type = "HTTP";
+      apiJson.status = "undone";
+      apiJson.edit_uid = 0;
+      apiJson.query_path = {
+        "path": apiData.mockPath,
+        "params": []
+      };
+      container.push(apiJson);
+    }
+
+  })
+}
+
 function format(mockJson) {
   var systemName = mockJson.name;
   var yapiArr = [];
-  var project_id = window.location.pathname.split('/')[2]
   mockJson.docs.forEach(function (group) {
     group.children.forEach(function (item, index) {
       var yapiJson = {
@@ -92,44 +134,7 @@ function format(mockJson) {
       yapiJson.add_time = Date.now();
       yapiJson.up_time = Date.now();
       yapiJson.index = index;
-      item.children.forEach(function (apiData, index) {
-        var apiJson = {};
-        var parseJson = {};
-        // TODO 这里有坑，数据有瑕疵，导致输出数据丢失
-        try {
-          parseJson = JSON.parse(apiData.content);
-        } catch (error) {
-          return;
-        }
-        apiJson._id = apiData.id;
-        apiJson.method = parseJson.requestMethod;
-        apiJson.catid = 0;
-        apiJson.title = apiData.name;
-        apiJson.path = apiData.mockPath;
-        apiJson.project_id = project_id;
-        apiJson.res_body_type = "json";
-        apiJson.desc = apiData.name;
-        apiJson.res_body = JSON.stringify(getResBody(parseJson.responseArgs));
-        apiJson.__v = 0;
-        apiJson.req_body_type = "json";
-        apiJson.req_body_other = JSON.stringify(getReqBody(parseJson.requestArgs));
-        apiJson.api_opened = false;
-        apiJson.res_body_is_json_schema = true;
-        apiJson.req_body_is_json_schema = true;
-        apiJson.req_body_form = [];
-        apiJson.req_params = [];
-        apiJson.req_headers = [];
-        apiJson.type = "static";
-        apiJson.protocol_type = "HTTP";
-        apiJson.status = "undone";
-        apiJson.edit_uid = 0;
-        apiJson.query_path = {
-          "path": apiData.mockPath,
-          "params": []
-        };
-        yapiJson.list.push(apiJson);
-      })
-      yapiArr.push(yapiJson)
+      getItem(item.children, yapiArr)
     })
 
   });
