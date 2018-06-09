@@ -1,0 +1,30 @@
+{
+	"name": "MockToYapi",
+	"version": "1.0",
+	"manifest_version": 2,
+	"content_scripts": [
+		{
+			"matches": [
+				"http://mock.corp.bianlifeng.com/doc/*"
+			],
+			"js": [
+				"js/FileSaver.js",
+				"js/content.js"
+			],
+			"css": [
+				"css/index.css"
+			],
+			"run_at": "document_end"
+		}
+	],
+	"browser_action": {
+		"default_icon": "img/logo.png",
+		"default_title": "mock迁移到yapi的插件",
+		"default_popup": "html/popup.html"
+	},
+	"background": {
+		"scripts": [
+			"js/background.js"
+		]
+	}
+}
