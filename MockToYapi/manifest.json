@@ -5,7 +5,7 @@
 	"content_scripts": [
 		{
 			"matches": [
-				"http://mock.corp.bianlifeng.com/doc/*"
+				"http://mock.corp.b.com/doc/*"
 			],
 			"js": [
 				"js/FileSaver.js",
