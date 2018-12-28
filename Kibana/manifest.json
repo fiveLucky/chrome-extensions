@@ -1,0 +1,25 @@
+{
+    "name": "Kibana",
+    "version": "2.0.0",
+    "manifest_version": 2,
+    "description": "Kibana",
+    "browser_action": {
+        "default_title": "Kibana"
+    },
+    "background": {
+        "persistent": true,
+        "scripts": [
+            "background.js"
+        ]
+    },
+    "chrome_url_overrides": {
+        "newtab": "release/index.html"
+    },
+    "permissions": [
+        "activeTab",
+        "background",
+        "cookies",
+        "unlimitedStorage",
+        "notifications"
+    ]
+}
