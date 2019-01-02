@@ -13,7 +13,7 @@
         ]
     },
     "chrome_url_overrides": {
-        "newtab": "release/index.html"
+        "bookmarks": "release/index.html"
     },
     "permissions": [
         "activeTab",
