@@ -19,7 +19,6 @@ const prodConfig = {
         },
       }
     }
-
   },
   plugins: [
     new MiniCssExtractPlugin({
