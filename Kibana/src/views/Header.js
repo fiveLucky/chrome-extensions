@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 
-import { DatePicker, Row, Col, Input, Layout, Select } from 'antd';
+import { DatePicker, Row, Col, Input, Select } from 'antd';
 import styles from './index.less';
 import store from './store';
 
 const { RangePicker } = DatePicker;
-const { Header: H } = Layout;
 const Search = Input.Search;
 
 const { Option } = Select;
@@ -15,7 +14,7 @@ export default class Header extends Component {
 
   render() {
     return (
-      <H className={styles.headerContainer}>
+      <div className={styles.headerContainer}>
         <Row>
           <Col span={8}>
             <label>系统：</label>
@@ -52,7 +51,7 @@ export default class Header extends Component {
             className={styles.headerInput}
           />
         </Row>
-      </H>
+      </div>
     );
   }
 }

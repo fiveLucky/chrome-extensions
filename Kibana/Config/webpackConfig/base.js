@@ -20,7 +20,7 @@ const config = {
   },
   output: {
     path: path.resolve(process.cwd(), './release'),
-    publicPath:'./',
+    publicPath: './',
     filename: '[name].js',
   },
   module: {
@@ -28,12 +28,12 @@ const config = {
       {
         test: /\.jsx?$/,
         exclude: /(node_modules)/,
-        loader:'babel-loader'
+        loader: 'babel-loader'
       },
       {
         test: /\.less$/,
         use: [
-         'style-loader' ,
+          'style-loader',
           {
             loader: 'css-loader',
             options: {
