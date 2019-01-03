@@ -1,5 +1,5 @@
 {
-    "name": "Kibana",
+    "name": "K",
     "version": "2.0.0",
     "manifest_version": 2,
     "description": "Kibana",
@@ -11,9 +11,6 @@
         "scripts": [
             "background.js"
         ]
-    },
-    "chrome_url_overrides": {
-        "bookmarks": "release/index.html"
     },
     "permissions": [
         "activeTab",
