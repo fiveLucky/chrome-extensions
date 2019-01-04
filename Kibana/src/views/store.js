@@ -1,6 +1,5 @@
-import React from 'react';
-import { observable } from 'mobx';
-
+import { observable, action, toJS, autorun } from 'mobx';
+import { TIME_RANGE } from '../util';
 class store {
   systemList = [
     {
@@ -23,37 +22,66 @@ class store {
   quikTimeList = [
     {
       name: 'last 15 minutes',
-      value: 'last15',
+      value: 'last15Minutes',
     },
     {
       name: 'last 30 minutes',
-      value: 'last30',
+      value: 'last30Minutes',
     },
     {
       name: 'last 1 hour',
-      value: 'lastOne',
+      value: 'last1Hour',
     },
     {
-      name: 'last 3 hour',
-      value: 'lastThree',
+      name: 'last 3 hours',
+      value: 'last3Hours',
     },
     {
-      name: 'last 6 hour',
-      value: 'lastSix',
+      name: 'last 6 hours',
+      value: 'last6Hours',
     },
     {
-      name: 'last 12 hour',
-      value: 'lastTwelve',
+      name: 'last half day',
+      value: 'lastHalfDay',
     },
     {
-      name: 'today',
-      value: 'today',
+      name: 'last 1 day',
+      value: 'last1Day',
     },
     {
-      name: 'this week',
-      value: 'week',
+      name: 'last 1 week',
+      value: 'last1Week',
     },
   ]
+
+  @observable model = {
+    quikRange: 'last15Minutes',
+    system: '80040'
+  };
+  param = {}
+
+  @action.bound
+  onChange(value, field) {
+    Object.assign(this.model, { [field]: value });
+  }
+  autoChange = autorun(() => {
+    if (this.model.quikRange) {
+      const timeRange = TIME_RANGE[this.model.quikRange]();
+      this.onChange(timeRange, 'timeRange');
+    }
+  })
+  onSearch = () => {
+    const p = toJS(this.model);
+    console.log(p);
+  }
+  okRange = () => {
+    delete this.model.quikRange;
+  }
+
+
+
+
+
 }
 
 export default new store();

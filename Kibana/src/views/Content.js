@@ -14,9 +14,9 @@ export default class Content extends Component {
   render() {
     return (
 
-      <C>
+      <C>content
 
       </C>
-    )
+    );
   }
 }
