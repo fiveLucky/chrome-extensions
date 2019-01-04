@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Layout, Table, Spin } from 'antd';
+import { Layout, Table } from 'antd';
 import { observer } from 'mobx-react';
 
 import store from './store';
+import styles from './index.less';
 
 const { Content: C } = Layout;
 
@@ -19,13 +20,12 @@ export default class Content extends Component {
     const { tableData, getColumns, loading } = store;
     return (
 
-      <C>
-        <Spin size="large" spinning={loading}>
-          <Table
-            dataSource={tableData}
-            columns={getColumns}
-          />
-        </Spin>
+      <C className={styles.contentContainer}>
+        <Table
+          dataSource={tableData}
+          columns={getColumns}
+          loading={loading}
+        />
       </C>
     );
   }

@@ -30,7 +30,6 @@ export default class Sider extends Component {
                 checked={siderData[key]}
                 onChange={value => onCheck(value, key)}
                 className={styles.siderSwitch}
-                size="small"
               >{key}</Switch></div>))
         }
       </S>

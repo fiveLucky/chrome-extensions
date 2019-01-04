@@ -17,7 +17,7 @@ export default class Header extends Component {
   }
 
   render() {
-    const { model, onChange, okRange } = store;
+    const { model, onChange, okRange, systemList, quikTimeList, total, onSearch } = store;
     const { system, timeRange, quikRange, search } = model;
     return (
       <H className={styles.headerContainer}>
@@ -32,7 +32,7 @@ export default class Header extends Component {
               placeholder="请选择系统"
             >
               {
-                store.systemList.map(item =>
+                systemList.map(item =>
                   (<Option key={item.value} value={item.value}>{item.name}【{item.value}】</Option>))
               }
             </Select>
@@ -44,7 +44,10 @@ export default class Header extends Component {
               onChange={value => onChange(value, 'timeRange')}
               showTime
               format="YYYY-MM-DD HH:mm:ss"
-              className={styles.headerPicker} />
+              className={styles.headerPicker}
+              onOk={okRange}
+            />
+
           </Col>
           <Col span={6}>
             <label>快捷时间：</label>
@@ -56,14 +59,14 @@ export default class Header extends Component {
               onOk={okRange}
             >
               {
-                store.quikTimeList.map(item => (<Option key={item.value} value={item.value}>{item.name}</Option>))
+                quikTimeList.map(item => (<Option key={item.value} value={item.value}>{item.name}</Option>))
               }
             </Select>
           </Col>
           <Col span={3}>
             <div>
               <label>共
-                <span className={styles.headerTotal}> {store.total} </span>
+                <span className={styles.headerTotal}> {total} </span>
                 条数据</label>
             </div>
           </Col>
@@ -74,7 +77,7 @@ export default class Header extends Component {
             enterButton="Search"
             size="large"
             onChange={e => onChange(e.target.value, 'search')}
-            onSearch={store.onSearch}
+            onSearch={onSearch}
             className={styles.headerInput}
             value={search}
           />

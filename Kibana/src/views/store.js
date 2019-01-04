@@ -1,3 +1,4 @@
+import React from 'react';
 import { observable, action, toJS, autorun, computed } from 'mobx';
 import { TIME_RANGE, getUrl } from '../util';
 class store {
@@ -88,7 +89,14 @@ class store {
   changeColumns = autorun(() => {
     this.columns = Object.keys(this.siderData).filter(key => this.siderData[key]).map(key => ({
       title: key,
-      dataIndex: key
+      dataIndex: key,
+      render: (value, row, index) => {
+        if (typeof value === 'object') {
+          const data = JSON.stringify(value, null, 4);
+          return (<span id={`${key}-${index}`}>{data}</span>);
+        }
+        return (<span>{value}</span>);
+      }
     }));
   })
 
