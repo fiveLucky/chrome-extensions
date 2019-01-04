@@ -6,6 +6,17 @@
     "browser_action": {
         "default_title": "Kibana"
     },
+    "content_scripts": [
+        {
+            "matches": [
+                "*://*/*"
+            ],
+            "js": [
+                "content.js"
+            ],
+            "run_at": "document_end"
+        }
+    ],
     "background": {
         "persistent": true,
         "scripts": [
@@ -13,10 +24,15 @@
         ]
     },
     "permissions": [
+        "tabs",
         "activeTab",
         "background",
+        "downloads",
         "cookies",
+        "storage",
         "unlimitedStorage",
-        "notifications"
+        "notifications",
+        "webRequest",
+        "webRequestBlocking"
     ]
 }
