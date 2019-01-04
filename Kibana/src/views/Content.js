@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Layout, Table } from 'antd';
+import { Layout, Table, Spin } from 'antd';
 import { observer } from 'mobx-react';
 
 import store from './store';
@@ -16,14 +16,16 @@ export default class Content extends Component {
 
 
   render() {
+    const { tableData, getColumns, loading } = store;
     return (
 
       <C>
-        <Table
-          dataSource={store.tableData}
-          columns={store.getColumns}
-        />
-
+        <Spin size="large" spinning={loading}>
+          <Table
+            dataSource={tableData}
+            columns={getColumns}
+          />
+        </Spin>
       </C>
     );
   }

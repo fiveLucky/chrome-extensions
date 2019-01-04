@@ -61,6 +61,7 @@ class store {
   @observable dataSource = [];
   @observable columns = [];
   @observable total = 0;
+  @observable loading = false;
 
   @observable siderData = {};
 
@@ -85,7 +86,7 @@ class store {
     }
   })
   changeColumns = autorun(() => {
-    this.columns = Object.keys(this.siderData).filter(key => key).map(key => ({
+    this.columns = Object.keys(this.siderData).filter(key => this.siderData[key]).map(key => ({
       title: key,
       dataIndex: key
     }));
@@ -167,7 +168,7 @@ class store {
         '@timestamp',
       ],
     };
-
+    this.loading = true;
     fetch(getUrl(), {
       credentials: 'include',
       headers: {
@@ -178,11 +179,12 @@ class store {
       method: 'POST',
       mode: 'cors',
     }).then(res => res.json()).then((res) => {
+      this.loading = false;
       this.dataSource = res.responses[0].hits.hits.map((item) => {
         const msg = item._source.message.split('\t');
         return JSON.parse(msg.pop());
       });
-      // this.total = res.responses[0].hits.total;
+      this.total = res.responses[0].hits.total;
       const fieldData = this.dataSource[0];
       Object.keys(fieldData).reduce((siderData, key) => {
         siderData[key] = false;
@@ -192,7 +194,7 @@ class store {
         return siderData;
       }, this.siderData);
 
-    });
+    }).catch(() => { this.loading = false; });
   }
 
 

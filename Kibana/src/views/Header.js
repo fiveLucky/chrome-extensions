@@ -22,7 +22,7 @@ export default class Header extends Component {
     return (
       <H className={styles.headerContainer}>
         <Row>
-          <Col span={7}>
+          <Col span={6}>
             <label>系统：</label>
             <Select
               defaultValue="80040"
@@ -37,7 +37,7 @@ export default class Header extends Component {
               }
             </Select>
           </Col>
-          <Col span={10}>
+          <Col span={9}>
             <label htmlFor="">时间范围：</label>
             <RangePicker
               value={timeRange}
@@ -46,7 +46,7 @@ export default class Header extends Component {
               format="YYYY-MM-DD HH:mm:ss"
               className={styles.headerPicker} />
           </Col>
-          <Col span={7}>
+          <Col span={6}>
             <label>快捷时间：</label>
             <Select
               placeholder="选择快捷时间"
@@ -59,6 +59,13 @@ export default class Header extends Component {
                 store.quikTimeList.map(item => (<Option key={item.value} value={item.value}>{item.name}</Option>))
               }
             </Select>
+          </Col>
+          <Col span={3}>
+            <div>
+              <label>共
+                <span className={styles.headerTotal}> {store.total} </span>
+                条数据</label>
+            </div>
           </Col>
         </Row>
         <Row>
