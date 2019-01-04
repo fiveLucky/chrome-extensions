@@ -1,5 +1,5 @@
-import { observable, action, toJS, autorun } from 'mobx';
-import { TIME_RANGE } from '../util';
+import { observable, action, toJS, autorun, computed } from 'mobx';
+import { TIME_RANGE, getUrl } from '../util';
 class store {
   systemList = [
     {
@@ -53,30 +53,148 @@ class store {
       value: 'last1Week',
     },
   ]
-
+  defaultCheckList = ['client_time', 'gid', 'entry_detail']
   @observable model = {
     quikRange: 'last15Minutes',
     system: '80040'
   };
-  param = {}
+  @observable dataSource = [];
+  @observable columns = [];
+  @observable total = 0;
+
+  @observable siderData = {};
 
   @action.bound
   onChange(value, field) {
     Object.assign(this.model, { [field]: value });
   }
-  autoChange = autorun(() => {
+  @action.bound
+  onCheck(value, field) {
+    Object.assign(this.siderData, { [field]: value });
+  }
+  @computed get tableData() {
+    return toJS(this.dataSource);
+  }
+  @computed get getColumns() {
+    return toJS(this.columns);
+  }
+  changeTime = autorun(() => {
     if (this.model.quikRange) {
       const timeRange = TIME_RANGE[this.model.quikRange]();
       this.onChange(timeRange, 'timeRange');
     }
   })
+  changeColumns = autorun(() => {
+    this.columns = Object.keys(this.siderData).filter(key => key).map(key => ({
+      title: key,
+      dataIndex: key
+    }));
+  })
+
   onSearch = () => {
-    const p = toJS(this.model);
-    console.log(p);
+    this.fetchTable();
   }
   okRange = () => {
     delete this.model.quikRange;
   }
+  fetchTable = () => {
+    const { timeRange, system, search } = toJS(this.model);
+    const size = 1000;
+    const fromMilliseconds = timeRange[0].valueOf();
+    const toMilliseconds = timeRange[1].valueOf();
+    const queryString = search ? `pid:${system} AND ${search}` : `pid:${system}`;
+    const param1 = {
+      index: [
+        'fe_app_log*',
+      ],
+      ignore_unavailable: true,
+      preference: 1543335722142, // TODO 这是啥
+    };
+
+    const querys = [{
+      query_string: {
+        query: queryString,
+        analyze_wildcard: true,
+      },
+    }];
+
+    const param2 = {
+      version: true,
+      size,
+      sort: [
+        {
+          '@timestamp': {
+            order: 'desc',
+            unmapped_type: 'boolean',
+          },
+        },
+      ],
+      query: {
+        bool: {
+          must: [
+            ...querys,
+            {
+              range: {
+                '@timestamp': {
+                  gte: fromMilliseconds,
+                  lte: toMilliseconds,
+                  format: 'epoch_millis',
+                },
+              },
+            },
+          ],
+          must_not: [],
+        },
+      },
+      _source: {
+        excludes: [],
+      },
+      aggs: {
+        2: {
+          date_histogram: {
+            field: '@timestamp',
+            interval: '30m',
+            time_zone: 'Asia/Shanghai',
+            min_doc_count: 1,
+          },
+        },
+      },
+      stored_fields: [
+        '*',
+      ],
+      script_fields: {},
+      docvalue_fields: [
+        '@timestamp',
+      ],
+    };
+
+    fetch(getUrl(), {
+      credentials: 'include',
+      headers: {
+        accept: 'application/json, text/plain, */*', 'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7,zh-TW;q=0.6', 'content-type': 'application/x-ndjson', 'kbn-version': '5.6.10'
+      },
+      referrerPolicy: 'no-referrer-when-downgrade',
+      body: `${JSON.stringify(param1)}\n${JSON.stringify(param2)}\n`,
+      method: 'POST',
+      mode: 'cors',
+    }).then(res => res.json()).then((res) => {
+      this.dataSource = res.responses[0].hits.hits.map((item) => {
+        const msg = item._source.message.split('\t');
+        return JSON.parse(msg.pop());
+      });
+      // this.total = res.responses[0].hits.total;
+      const fieldData = this.dataSource[0];
+      Object.keys(fieldData).reduce((siderData, key) => {
+        siderData[key] = false;
+        if (this.defaultCheckList.indexOf(key) > -1) {
+          siderData[key] = true;
+        }
+        return siderData;
+      }, this.siderData);
+
+    });
+  }
+
 
 
 

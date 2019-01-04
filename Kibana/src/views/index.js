@@ -14,9 +14,9 @@ export default class Index extends Component {
     return (
       <div>
         <Layout>
-          <Sider />
+          <Header />
           <Layout>
-            <Header />
+            <Sider />
             <Content />
           </Layout>
         </Layout>

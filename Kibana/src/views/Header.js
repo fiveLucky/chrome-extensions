@@ -13,7 +13,7 @@ const { Option } = Select;
 export default class Header extends Component {
 
   componentDidMount() {
-
+    store.onSearch();
   }
 
   render() {
