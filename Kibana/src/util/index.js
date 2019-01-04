@@ -12,13 +12,6 @@ export const TIME_RANGE = {
   last1Week: () => [moment().subtract(7, "days"), moment()],
 };
 
-export const requst = () => {
-
-};
-
-
-
-
 
 export const encode = (string) => {
   return string.split('').map(char => char.charCodeAt(0)).map(code => String.fromCharCode(code + 1)).join('');
@@ -26,3 +19,4 @@ export const encode = (string) => {
 export const decode = (string) => {
   return string.split('').map(char => char.charCodeAt(0)).map(code => String.fromCharCode(code - 1)).join('');
 };
+export const getUrl = () => decode('iuuqt;00mph/dpsq/cjbomjgfoh/dpn0fmbtujdtfbsdi0`ntfbsdi');
