@@ -1,10 +1,10 @@
 import React from 'react';
 import { observable, action, toJS, autorun, computed } from 'mobx';
-import { notification, Collapse } from 'antd';
-import { TIME_RANGE, getUrl } from '../util';
-import styles from './index.less';
+import { notification, Tree } from 'antd';
+import Highlighter from 'react-highlight-words';
 
-const { Panel } = Collapse;
+import { TIME_RANGE, getUrl } from '../util';
+
 
 
 class store {
@@ -69,8 +69,13 @@ class store {
   @observable columns = [];
   @observable total = 0;
   @observable loading = false;
+  @observable expand = false;
 
   @observable siderData = {};
+  @observable findWord = '';
+  @observable activeKey = {};
+  stashActiveKey = {};
+
 
   @action.bound
   onChange(value, field) {
@@ -92,34 +97,61 @@ class store {
       this.onChange(timeRange, 'timeRange');
     }
   })
+  sorter = (a, b) => new Date(String(a.client_time)) - new Date(String(b.client_time))
   changeColumns = autorun(() => {
+    console.log('adfdasfsd');
+    Object.keys(this.activeKey).map(d => d);
     this.columns = Object.keys(this.siderData).filter(key => this.siderData[key]).map(key => ({
       title: key,
       dataIndex: key,
+      defaultSortOrder: 'ascend',
+      sorter: key === 'client_time' && this.sorter,
       render: (value, r, i) => {
+        const k = `${key}-${i}`;
+        this.stashActiveKey[k] = k;
         if (typeof value === 'object') {
 
           const data = JSON.stringify(value, null, 4);
           if (key === 'entry_detail') {
             const header = data.slice(0, 50) + '...';
+            return (<Tree
+              autoExpandParent={false}
+              expandedKeys={[this.activeKey[k]]}
+              onExpand={() => this.onExpand(k)}
+            >
+              <Tree.TreeNode key={k} title={header} >
+                <Tree.TreeNode title={this.renderHightLight(data)} />
+              </Tree.TreeNode>
 
-            return (<Collapse bordered={false} className={styles.collapse}>
-              <Panel key={`${key}-${i}`} header={header}>{data}</Panel>
-            </Collapse>);
+            </Tree>);
           }
-          return (<span>{data}</span >);
+          return this.renderHightLight(data);
         }
-        return (<span> {value}</span >);
+        return this.renderHightLight(value);
       }
     }));
   })
-
+  renderHightLight = (data) => (<Highlighter
+    highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+    searchWords={[this.findWord]}
+    autoEscape
+    textToHighlight={data}
+  />)
+  onExpand = (k) => {
+    this.activeKey = { [k]: k };
+  }
   onSearch = () => {
     this.fetchTable();
-  }
+  };
   okRange = () => {
     delete this.model.quikRange;
+  };
+
+  onFindInput = (value) => {
+    this.activeKey = { ...this.stashActiveKey };
+    this.findWord = value;
   }
+
   fetchTable = () => {
     const { timeRange, system, search } = toJS(this.model);
     const size = 1000;
@@ -242,13 +274,6 @@ class store {
       this.loading = false;
       notification.error({ message: err.message });
     });
-  }
-
-
-
-
-
-
+  };
 }
-
 export default new store();

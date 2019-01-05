@@ -49,6 +49,7 @@
     "mobx-react": "^5.2.3",
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
-    "react-dom": "^16.6.3"
+    "react-dom": "^16.6.3",
+    "react-highlight-words": "^0.15.1"
   }
 }

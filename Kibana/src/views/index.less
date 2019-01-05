@@ -40,10 +40,18 @@
 }
 // content
 .contentContainer{
+  position: relative;
   padding:16px;
   min-height: 500px;
   max-width: calc(~'100vw - 200px');
   background: #FFF;
+  .contentSearch{
+    width: 400px;
+    position: absolute;
+    left: 18px;
+    top: 24px;
+    z-index: 999;
+  }
   :global{
     .ant-collapse {
       .ant-collapse-item{
@@ -51,13 +59,18 @@
       }
     }
     .ant-collapse-borderless {
+      background: none;
       .ant-collapse-item{
         border: none;
       }
     } 
+    .ant-tree{
+      li{
+        white-space: normal;
+        .ant-tree-node-content-wrapper {
+          display: contents;
+        }
+      }
+    }
   }
-}
-
-.collapse{
-  background: none;
 }

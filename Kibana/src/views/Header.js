@@ -65,9 +65,9 @@ export default class Header extends Component {
           </Col>
           <Col span={3}>
             <div>
-              <label>共
+              <label>TOTAL
                 <span className={styles.headerTotal}> {total} </span>
-                条数据</label>
+              </label>
             </div>
           </Col>
         </Row>
