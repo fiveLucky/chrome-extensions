@@ -1,5 +1,6 @@
 import React from 'react';
 import { observable, action, toJS, autorun, computed } from 'mobx';
+import { notification } from 'antd';
 import { TIME_RANGE, getUrl } from '../util';
 class store {
   systemList = [
@@ -180,29 +181,54 @@ class store {
     fetch(getUrl(), {
       credentials: 'include',
       headers: {
-        accept: 'application/json, text/plain, */*', 'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7,zh-TW;q=0.6', 'content-type': 'application/x-ndjson', 'kbn-version': '5.6.10'
+        accept: 'application/json, text/plain, */*, text/html;charset=UTF-8', 'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7,zh-TW;q=0.6', 'content-type': 'application/x-ndjson', 'kbn-version': '5.6.10'
       },
       referrerPolicy: 'no-referrer-when-downgrade',
       body: `${JSON.stringify(param1)}\n${JSON.stringify(param2)}\n`,
       method: 'POST',
       mode: 'cors',
-    }).then(res => res.json()).then((res) => {
+    }).then(res => {
+      if (res.redirected) {
+        throw new Error('请登录Kibana');
+      }
+      try {
+        const json = res.json();
+        return json;
+      } catch (err) {
+        throw new Error('数据解析错误');
+      }
+    }).then((res) => {
       this.loading = false;
-      this.dataSource = res.responses[0].hits.hits.map((item) => {
-        const msg = item._source.message.split('\t');
-        return JSON.parse(msg.pop());
-      });
-      this.total = res.responses[0].hits.total;
-      const fieldData = this.dataSource[0];
-      Object.keys(fieldData).reduce((siderData, key) => {
-        siderData[key] = false;
-        if (this.defaultCheckList.indexOf(key) > -1) {
-          siderData[key] = true;
-        }
-        return siderData;
-      }, this.siderData);
+      const data = res.responses[0];
+      this.total = data.hits.total;
 
-    }).catch(() => { this.loading = false; });
+
+      if (data._shards.failed === 0) {
+        this.dataSource = data.hits.hits.map((item) => {
+          const msg = item._source.message.split('\t');
+          return JSON.parse(msg.pop());
+        });
+        const fieldData = this.dataSource[0];
+        Object.keys(fieldData).reduce((siderData, key) => {
+          siderData[key] = false;
+          if (this.defaultCheckList.indexOf(key) > -1) {
+            siderData[key] = true;
+          }
+          return siderData;
+        }, this.siderData);
+
+      } else {
+        this.dataSource = [];
+        this.siderData = {};
+        const { caused_by } = data._shards.failures[0].reason;
+        if (caused_by.type === 'parse_exception') {
+          throw new Error('query语法错误');
+        }
+      }
+    }).catch((err) => {
+      this.loading = false;
+      notification.error({ message: err.message });
+    });
   }
 
 

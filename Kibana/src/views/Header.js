@@ -73,7 +73,7 @@ export default class Header extends Component {
         </Row>
         <Row>
           <Search
-            placeholder="input search text"
+            placeholder="Uses lucene query syntax"
             enterButton="Search"
             size="large"
             onChange={e => onChange(e.target.value, 'search')}
