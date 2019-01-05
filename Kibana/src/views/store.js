@@ -1,7 +1,12 @@
 import React from 'react';
 import { observable, action, toJS, autorun, computed } from 'mobx';
-import { notification } from 'antd';
+import { notification, Collapse } from 'antd';
 import { TIME_RANGE, getUrl } from '../util';
+import styles from './index.less';
+
+const { Panel } = Collapse;
+
+
 class store {
   systemList = [
     {
@@ -91,12 +96,20 @@ class store {
     this.columns = Object.keys(this.siderData).filter(key => this.siderData[key]).map(key => ({
       title: key,
       dataIndex: key,
-      render: (value, row, index) => {
+      render: (value, r, i) => {
         if (typeof value === 'object') {
+
           const data = JSON.stringify(value, null, 4);
-          return (<span id={`${key}-${index}`}>{data}</span>);
+          if (key === 'entry_detail') {
+            const header = data.slice(0, 50) + '...';
+
+            return (<Collapse bordered={false} className={styles.collapse}>
+              <Panel key={`${key}-${i}`} header={header}>{data}</Panel>
+            </Collapse>);
+          }
+          return (<span>{data}</span >);
         }
-        return (<span>{value}</span>);
+        return (<span> {value}</span >);
       }
     }));
   })

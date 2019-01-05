@@ -25,6 +25,7 @@ export default class Content extends Component {
           dataSource={tableData}
           columns={getColumns}
           loading={loading}
+          pagination={{ position: 'top' }}
         />
       </C>
     );
