@@ -1,7 +1,7 @@
 import React from 'react';
 import { observable, action, toJS, autorun, computed } from 'mobx';
 import { notification, Tree } from 'antd';
-import Highlighter from 'react-highlight-words';
+import Highlighter from './HighLight';
 
 import { TIME_RANGE, getUrl } from '../util';
 
@@ -19,11 +19,15 @@ class store {
     },
     {
       name: 'tms',
-      value: 'fe_tms_pc_2018'
+      value: 'fe_biz_tms_pc_2018'
     },
     {
-      name: 'tms-app',
-      value: '80013'
+      name: '小鲜司机Android',
+      value: '80110'
+    },
+    {
+      name: '小鲜司机iOS',
+      value: '60110'
     },
   ]
   quikTimeList = [
@@ -74,6 +78,7 @@ class store {
   @observable siderData = {};
   @observable findWord = '';
   @observable activeKey = {};
+  @observable matchedNum = 0;
   stashActiveKey = {};
 
 
@@ -99,7 +104,6 @@ class store {
   })
   sorter = (a, b) => new Date(String(a.client_time)) - new Date(String(b.client_time))
   changeColumns = autorun(() => {
-    console.log('adfdasfsd');
     Object.keys(this.activeKey).map(d => d);
     this.columns = Object.keys(this.siderData).filter(key => this.siderData[key]).map(key => ({
       title: key,
@@ -117,7 +121,7 @@ class store {
             return (<Tree
               autoExpandParent={false}
               expandedKeys={[this.activeKey[k]]}
-              onExpand={() => this.onExpand(k)}
+              onExpand={(expandedKeys, status) => this.onExpand(k, status)}
             >
               <Tree.TreeNode key={k} title={header} >
                 <Tree.TreeNode title={this.renderHightLight(data)} />
@@ -132,24 +136,32 @@ class store {
     }));
   })
   renderHightLight = (data) => (<Highlighter
-    highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-    searchWords={[this.findWord]}
-    autoEscape
-    textToHighlight={data}
+    className="bg-second"
+    searchWord={this.model.findWord}
+    sourceText={data}
+    onMatch={this.onMatch}
   />)
-  onExpand = (k) => {
-    this.activeKey = { [k]: k };
+  onMatch = () => {
+    console.log(this.matchedNum++);
+  }
+  onExpand = (k, status) => {
+    if (!status.expanded) {
+      this.activeKey = {};
+    } else {
+      this.activeKey = { [k]: k };
+    }
   }
   onSearch = () => {
+    this.model.findWord = '';
+    this.highLightNum = 0;
     this.fetchTable();
   };
   okRange = () => {
     delete this.model.quikRange;
   };
 
-  onFindInput = (value) => {
+  onFindInput = () => {
     this.activeKey = { ...this.stashActiveKey };
-    this.findWord = value;
   }
 
   fetchTable = () => {
@@ -249,22 +261,25 @@ class store {
 
 
       if (data._shards.failed === 0) {
-        this.dataSource = data.hits.hits.map((item) => {
-          const msg = item._source.message.split('\t');
-          return JSON.parse(msg.pop());
-        });
-        const fieldData = this.dataSource[0];
-        Object.keys(fieldData).reduce((siderData, key) => {
-          siderData[key] = false;
-          if (this.defaultCheckList.indexOf(key) > -1) {
-            siderData[key] = true;
-          }
-          return siderData;
-        }, this.siderData);
+        if (data.hits.hits.length > 0) {
+          this.dataSource = data.hits.hits.map((item) => {
+            const msg = item._source.message.split('\t');
+            return JSON.parse(msg.pop());
+          });
+          const fieldData = this.dataSource[0];
+          Object.keys(fieldData).reduce((siderData, key) => {
+            siderData[key] = false;
+            if (this.defaultCheckList.indexOf(key) > -1) {
+              siderData[key] = true;
+            }
+            return siderData;
+          }, this.siderData);
+        } else {
+          this.clearTableData();
+        }
 
       } else {
-        this.dataSource = [];
-        this.siderData = {};
+        this.clearTableData();
         const { caused_by } = data._shards.failures[0].reason;
         if (caused_by.type === 'parse_exception') {
           throw new Error('query语法错误');
@@ -275,5 +290,10 @@ class store {
       notification.error({ message: err.message });
     });
   };
+  @action.bound
+  clearTableData() {
+    this.dataSource = [];
+    this.siderData = {};
+  }
 }
 export default new store();

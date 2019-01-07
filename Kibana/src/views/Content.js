@@ -17,16 +17,23 @@ export default class Content extends Component {
 
 
   render() {
-    const { tableData, getColumns, loading, onFindInput } = store;
+    const { tableData, getColumns, loading, onFindInput, dataSource, model, onChange, highLightNum } = store;
     return (
 
       <C className={styles.contentContainer}>
-        <Search
-          placeholder="input search text"
-          onSearch={onFindInput}
-          className={styles.contentSearch}
-          enterButton
-        />
+        {
+          dataSource.length > 0 && <div className={styles.contentSearch}>
+            <Search
+              placeholder="input search text"
+              onSearch={onFindInput}
+              value={model.findWord}
+              enterButton
+              onChange={e => onChange(e.target.value, 'findWord')}
+              className="w400"
+            />
+            <div className={styles.contentNum}>搜索结果：{highLightNum}</div>
+          </div>
+        }
         <Table
           dataSource={tableData}
           columns={getColumns}

@@ -28,12 +28,13 @@ export default class Header extends Component {
               defaultValue="80040"
               value={system}
               onChange={value => onChange(value, 'system')}
-              className={styles.headerSelect}
+              className="w230"
               placeholder="请选择系统"
+              dropdownMatchSelectWidth={false}
             >
               {
                 systemList.map(item =>
-                  (<Option key={item.value} value={item.value}>{item.name}【{item.value}】</Option>))
+                  (<Option key={item.value} value={item.value}>{item.name}[{item.value}]</Option>))
               }
             </Select>
           </Col>
@@ -44,7 +45,7 @@ export default class Header extends Component {
               onChange={value => onChange(value, 'timeRange')}
               showTime
               format="YYYY-MM-DD HH:mm:ss"
-              className={styles.headerPicker}
+              className="w400"
               onOk={okRange}
             />
 
@@ -55,7 +56,7 @@ export default class Header extends Component {
               placeholder="选择快捷时间"
               value={quikRange}
               onChange={value => onChange(value, 'quikRange')}
-              className={styles.headerSelect}
+              className="w170"
               onOk={okRange}
             >
               {
