@@ -1,0 +1,74 @@
+// header
+.headerContainer{
+  height: 120px;
+  background: #ecf0f1;
+  padding:16px;
+  border-bottom: 1px dashed #1890ff;
+  .headerInput{
+    width: 100%;
+    margin-top:10px;
+  }
+  .headerTotal{
+    color: #1890ff;
+    font-size: 20px;
+    font-weight: bold;
+  }
+}
+
+// sider
+.siderContainer{
+  width: 200px;
+  background: #ecf0f1;
+  padding:16px;
+  border-right: 1px dashed #1890ff;
+  .siderRow{
+    overflow: hidden;
+    margin-bottom:10px;
+    .siderLabel{
+      float: left;
+    }
+    .siderSwitch{
+      float: right;
+    }
+  }
+}
+// content
+.contentContainer{
+  position: relative;
+  padding:16px;
+  min-height: 500px;
+  max-width: calc(~'100vw - 200px');
+  background: #FFF;
+  .contentSearch{
+    width: 500px;
+    position: absolute;
+    left: 18px;
+    top: 24px;
+    z-index: 999;
+  }
+  .contentNum{
+    display: inline-block;
+    margin-left: 20px;
+  }
+  :global{
+    .ant-collapse {
+      .ant-collapse-item{
+        border: none;
+      }
+    }
+    .ant-collapse-borderless {
+      background: none;
+      .ant-collapse-item{
+        border: none;
+      }
+    } 
+    .ant-tree{
+      li{
+        white-space: normal;
+        .ant-tree-node-content-wrapper {
+          display: contents;
+        }
+      }
+    }
+  }
+}
