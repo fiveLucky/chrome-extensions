@@ -84,6 +84,9 @@ class store {
 
   @action.bound
   onChange(value, field) {
+    if(field === 'system'){
+      delete this.model.search;
+    }
     Object.assign(this.model, { [field]: value });
   }
   @action.bound
@@ -104,6 +107,7 @@ class store {
   })
   sorter = (a, b) => new Date(String(a.client_time)) - new Date(String(b.client_time))
   changeColumns = autorun(() => {
+    // 为了监听activeKey 自动执行  无任何逻辑意义
     Object.keys(this.activeKey).map(d => d);
     this.columns = Object.keys(this.siderData).filter(key => this.siderData[key]).map(key => ({
       title: key,
@@ -153,6 +157,7 @@ class store {
   }
   onSearch = () => {
     this.model.findWord = this.findWord = '';
+    this.stashActiveKey = {};
     // this.matchedNum = 0;
     this.fetchTable();
   };
@@ -268,13 +273,13 @@ class store {
             return JSON.parse(msg.pop());
           });
           const fieldData = this.dataSource[0];
-          Object.keys(fieldData).reduce((siderData, key) => {
+          this.siderData = Object.keys(fieldData).reduce((siderData, key) => {
             siderData[key] = false;
             if (this.defaultCheckList.indexOf(key) > -1) {
               siderData[key] = true;
             }
             return siderData;
-          }, this.siderData);
+          }, {});
         } else {
           this.clearTableData();
         }

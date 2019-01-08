@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+const placeholder = '@#$%';
 
 export default class HighLight extends Component {
   static propTypes = {
@@ -14,12 +15,11 @@ export default class HighLight extends Component {
   render() {
     const { sourceText, searchWord, className } = this.props;
     let st = sourceText;
-    const placehoder = '@#$%';
-    if (searchWord && sourceText.includes(searchWord)) {
+    if (searchWord && sourceText && sourceText.includes(searchWord)) {
       st = sourceText.replace(new RegExp(searchWord, 'g'), () => {
         // onMatch();
-        return `${placehoder}${searchWord}${placehoder}`;
-      }).split(placehoder).map(str => {
+        return `${placeholder}${searchWord}${placeholder}`;
+      }).split(placeholder).map(str => {
         if (str === searchWord) {
           return <span className={className}>{searchWord}</span>;
         } else {
