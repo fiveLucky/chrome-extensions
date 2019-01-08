@@ -19,7 +19,7 @@ class store {
     },
     {
       name: 'tms',
-      value: 'fe_biz_tms_pc_2018'
+      value: 'fe_tms_2018'
     },
     {
       name: '小鲜司机Android',
