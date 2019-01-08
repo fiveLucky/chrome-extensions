@@ -78,7 +78,7 @@ class store {
   @observable siderData = {};
   @observable findWord = '';
   @observable activeKey = {};
-  @observable matchedNum = 0;
+  // @observable matchedNum = 0;
   stashActiveKey = {};
 
 
@@ -139,12 +139,11 @@ class store {
     className="bg-second"
     searchWord={this.findWord}
     sourceText={data}
-    onMatch={this.onMatch}
+  // onMatch={this.onMatch}
   />)
-  onMatch = () => {
-    console.log('match');
-    this.matchedNum += 1;
-  }
+  // onMatch = () => {
+  //   this.matchedNum += 1;
+  // }
   onExpand = (k, status) => {
     if (!status.expanded) {
       this.activeKey = {};
@@ -154,7 +153,7 @@ class store {
   }
   onSearch = () => {
     this.model.findWord = this.findWord = '';
-    this.matchedNum = 0;
+    // this.matchedNum = 0;
     this.fetchTable();
   };
   okRange = () => {
@@ -162,7 +161,6 @@ class store {
   };
 
   onFindInput = () => {
-    // this.matchedNum = 0;
     this.findWord = this.model.findWord;
     this.activeKey = { ...this.stashActiveKey };
   }
