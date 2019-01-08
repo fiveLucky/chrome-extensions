@@ -137,12 +137,13 @@ class store {
   })
   renderHightLight = (data) => (<Highlighter
     className="bg-second"
-    searchWord={this.model.findWord}
+    searchWord={this.findWord}
     sourceText={data}
     onMatch={this.onMatch}
   />)
   onMatch = () => {
-    console.log(this.matchedNum++);
+    console.log('match');
+    this.matchedNum += 1;
   }
   onExpand = (k, status) => {
     if (!status.expanded) {
@@ -152,8 +153,8 @@ class store {
     }
   }
   onSearch = () => {
-    this.model.findWord = '';
-    this.highLightNum = 0;
+    this.model.findWord = this.findWord = '';
+    this.matchedNum = 0;
     this.fetchTable();
   };
   okRange = () => {
@@ -161,6 +162,8 @@ class store {
   };
 
   onFindInput = () => {
+    // this.matchedNum = 0;
+    this.findWord = this.model.findWord;
     this.activeKey = { ...this.stashActiveKey };
   }
 

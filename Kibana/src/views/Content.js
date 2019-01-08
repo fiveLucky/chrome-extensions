@@ -17,7 +17,7 @@ export default class Content extends Component {
 
 
   render() {
-    const { tableData, getColumns, loading, onFindInput, dataSource, model, onChange, highLightNum } = store;
+    const { tableData, getColumns, loading, onFindInput, dataSource, model, onChange } = store;
     return (
 
       <C className={styles.contentContainer}>
@@ -31,7 +31,7 @@ export default class Content extends Component {
               onChange={e => onChange(e.target.value, 'findWord')}
               className="w400"
             />
-            <div className={styles.contentNum}>搜索结果：{highLightNum}</div>
+            {/* <div className={styles.contentNum}>搜索结果：{matchedNum}</div> */}
           </div>
         }
         <Table
