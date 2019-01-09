@@ -1,11 +1,24 @@
 
 const aList = document.querySelectorAll('span.item a');
-const i = document.getElementById('mod_player');
-const urlList = Array.from(aList).map(node => node.baseURI);
-const curHref = window.location.href;
-const vipUrl = "https://jx.wslmf.com/?url=" + curHref;
+const getCurUrl = () => window.location.href;
 
-i.innerHTML = `<iframe id="mainIframe" name="mainIframe" src=${vipUrl} frameborder="0" scrolling="auto" ></iframe>`
+Array.from(aList).forEach(node => {
+    node.onclick = function (e) {
+        const j = e.target.href.split('/').pop()
+        location.assign(j)
+    }
+    return node.baseURI
+});
+const vipUrl = "https://jx.wslmf.com/?url=" + getCurUrl();
+
+const i = document.getElementById('mod_player');
+i.innerHTML = `<iframe id="mainIframe" height="100%" width="100%" name="mainIframe" src=${vipUrl} frameborder="0" scrolling="auto" ></iframe>`
+
+
+
+
+
+
 
 
 // fetch(vipUrl + curHref, {
@@ -16,3 +29,17 @@ i.innerHTML = `<iframe id="mainIframe" name="mainIframe" src=${vipUrl} framebord
 //     console.log(res)
 
 // })
+
+const handler = {
+    get: (t, n) => {
+        return t[n]
+    },
+    set: (t, n, v) => {
+        t[n] = v;
+        renderDom();
+    }
+}
+
+function observable(obj) {
+    return new Proxy(obj, handler)
+}
