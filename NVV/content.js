@@ -4,10 +4,8 @@ const getCurUrl = () => window.location.href;
 
 Array.from(aList).forEach(node => {
     node.onclick = function (e) {
-        const j = e.target.href.split('/').pop()
-        location.assign(j)
+        location.assign(node.href)
     }
-    return node.baseURI
 });
 const vipUrl = "https://jx.wslmf.com/?url=" + getCurUrl();
 
