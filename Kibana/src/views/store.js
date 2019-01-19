@@ -37,31 +37,31 @@ class store {
     },
     {
       name: 'last 30 minutes',
-      value: 'last30Minutes',
+      value: '过去30分钟',
     },
     {
       name: 'last 1 hour',
-      value: 'last1Hour',
+      value: '过去1小时',
     },
     {
       name: 'last 3 hours',
-      value: 'last3Hours',
+      value: '过去3小时',
     },
     {
       name: 'last 6 hours',
-      value: 'last6Hours',
+      value: '过去6小时',
     },
     {
       name: 'last half day',
-      value: 'lastHalfDay',
+      value: '过去半天',
     },
     {
       name: 'last 1 day',
-      value: 'last1Day',
+      value: '过去1天',
     },
     {
       name: 'last 1 week',
-      value: 'last1Week',
+      value: '过去1周',
     },
   ]
   defaultCheckList = ['client_time', 'gid', 'entry_detail']
@@ -84,7 +84,7 @@ class store {
 
   @action.bound
   onChange(value, field) {
-    if(field === 'system'){
+    if (field === 'system') {
       delete this.model.search;
     }
     Object.assign(this.model, { [field]: value });
