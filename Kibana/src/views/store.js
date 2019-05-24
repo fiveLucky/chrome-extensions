@@ -32,36 +32,36 @@ class store {
   ]
   quikTimeList = [
     {
-      name: 'last 15 minutes',
+      name: '过去的15分钟',
       value: 'last15Minutes',
     },
     {
-      name: 'last 30 minutes',
-      value: '过去30分钟',
+      name: '过去的30分钟',
+      value: 'last30Minutes',
     },
     {
-      name: 'last 1 hour',
-      value: '过去1小时',
+      name: '过去的1小时',
+      value: 'last1Hour',
     },
     {
-      name: 'last 3 hours',
-      value: '过去3小时',
+      name: '过去的3小时',
+      value: 'last3Hours',
     },
     {
-      name: 'last 6 hours',
-      value: '过去6小时',
+      name: '过去的6小时',
+      value: 'last6Hours',
     },
     {
-      name: 'last half day',
-      value: '过去半天',
+      name: '过去的半天',
+      value: 'lastHalfDay',
     },
     {
-      name: 'last 1 day',
-      value: '过去1天',
+      name: '过去的1天',
+      value: 'last1Day',
     },
     {
-      name: 'last 1 week',
-      value: '过去1周',
+      name: '过去的1周',
+      value: 'last1Week',
     },
   ]
   defaultCheckList = ['client_time', 'gid', 'entry_detail']

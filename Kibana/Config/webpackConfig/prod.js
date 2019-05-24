@@ -1,5 +1,5 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
+// const ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
 const webpackMerge = require('webpack-merge');
 const baseConfig = require('./base');
 
@@ -25,9 +25,9 @@ const prodConfig = {
       filename: "style@[contenthash].css",
       chunkFilename: "style@[contenthash].css"
     }),
-    new ParallelUglifyPlugin({
-      cacheDir: '.cache/',
-    }),
+    // new ParallelUglifyPlugin({
+    //   cacheDir: '.cache/',
+    // }),
   ],
 };
 

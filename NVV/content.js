@@ -2,7 +2,7 @@
 
 const getCurUrl = () => location.href;
 
-
+const URL = 'http://jqaaa.com/jx.php?url=';
 
 
 
@@ -25,7 +25,7 @@ function qq() {
             location.assign(node.href)
         }
     });
-    const vipUrl = "https://jx.wslmf.com/?url=" + getCurUrl();
+    const vipUrl = URL + getCurUrl();
 
     const i = document.getElementById('mod_player');
     i.innerHTML = `<iframe id="mainIframe" height="100%" width="100%" name="mainIframe" src=${vipUrl} frameborder="0" scrolling="auto" ></iframe>`
@@ -40,7 +40,7 @@ function iqiyi() {
         }
     });
 
-    const vipUrl = "https://jx.wslmf.com/?url=" + getCurUrl();
+    const vipUrl = URL + getCurUrl();
     const i = document.getElementById('flashbox');
     i.innerHTML = `<iframe id="mainIframe" height="100%" width="100%" name="mainIframe" src=${vipUrl} frameborder="0" scrolling="auto" ></iframe>`
 }
