@@ -2,18 +2,21 @@
 
 const getCurUrl = () => location.href;
 
-const URL = 'http://jqaaa.com/jx.php?url=';
+const URL = 'https://api.v6.chat/?url=';
 
 
 
-const [i, q] = ['www.iqiyi.com', 'v.qq.com']
+const [i, q] = [
+    'www.iqiyi.com',
+    'v.qq.com'
+]
 
 if (getCurUrl().includes(q)) {
     qq();
 }
-if (getCurUrl().includes(i)) {
-    iqiyi();
-}
+// if (getCurUrl().includes(i)) {
+//     iqiyi();
+// }
 
 
 
@@ -28,7 +31,7 @@ function qq() {
     const vipUrl = URL + getCurUrl();
 
     const i = document.getElementById('mod_player');
-    i.innerHTML = `<iframe id="mainIframe" height="100%" width="100%" name="mainIframe" src=${vipUrl} frameborder="0" scrolling="auto" ></iframe>`
+    i.innerHTML = `<iframe id="mainIframe" height="100%" width="100%" name="mainIframe" src=${vipUrl} frameborder="0" scrolling="auto" allowfullscreen ></iframe>`
 }
 function iqiyi() {
     alert('iqiyi')
