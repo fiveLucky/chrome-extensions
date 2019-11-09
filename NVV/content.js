@@ -6,17 +6,17 @@ const URL = 'https://api.v6.chat/?url=';
 
 
 
-const [i, q] = [
+const [iqiyiDomain, qqDomain] = [
     'www.iqiyi.com',
     'v.qq.com'
 ]
 
-if (getCurUrl().includes(q)) {
+if (getCurUrl().includes(qqDomain)) {
     qq();
 }
-// if (getCurUrl().includes(i)) {
-//     iqiyi();
-// }
+if (getCurUrl().includes(iqiyiDomain)) {
+    iqiyi();
+}
 
 
 
@@ -39,7 +39,7 @@ function iqiyi() {
     console.log(aList)
     Array.from(aList).forEach(node => {
         node.onclick = function (e) {
-            location.assign(node.baseURI.replace('https://' + i, ''))
+            location.assign(node.baseURI.replace('https://' + iqiyiDomain, ''))
         }
     });
 
