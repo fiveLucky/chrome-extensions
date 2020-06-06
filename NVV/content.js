@@ -66,7 +66,7 @@ function mangGuoTV() {
   const vipUrl = URL + getCurUrl();
 
   listenDom(
-    () => document.querySelector("container"),
+    () => document.querySelector("#mgtv-player-wrap"),
     (dom) => {
       //   const wrapper = document.createElement("div");
       //   wrapper.style.height = "100%";
@@ -75,7 +75,7 @@ function mangGuoTV() {
       //   wrapper.style.top = "0";
       //   wrapper.style.zIndex = "999";
 
-      dom.parentNode.innerHTML = `<iframe id="mainIframe" height="100%" width="100%" name="mainIframe" src=${vipUrl} frameborder="0" scrolling="auto" allowfullscreen ></iframe>`;
+      dom.parentNode.innerHTML = `<iframe id="mainIframe" height="100%" width="100%" name="mainIframe" style="position:absolute; top:0;z-index:999;" src=${vipUrl} frameborder="0" scrolling="auto" allowfullscreen ></iframe>`;
       //   删除原视频和音频
       setTimeout(() => {
         dom.parentNode.removeChild(dom);
