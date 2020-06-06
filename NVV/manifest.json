@@ -1,38 +1,37 @@
 {
-    "name": "NVV",
-    "version": "2.0.0",
-    "manifest_version": 2,
-    "description": "no vip videos",
-    "browser_action": {
-        "default_title": "NVV"
-    },
-    "content_scripts": [{
-        "matches": [
-            "https://v.qq.com/x/cover/*",
-            "https://www.iqiyi.com/*"
-        ],
-        "js": [
-            "content.js"
-        ],
-        "run_at": "document_end"
-    }],
-    "background": {
-        "persistent": true,
-        "scripts": [
-            "background.js"
-        ]
-    },
-    "permissions": [
-        "*://*/*",
-        "tabs",
-        "activeTab",
-        "background",
-        "downloads",
-        "cookies",
-        "storage",
-        "unlimitedStorage",
-        "notifications",
-        "webRequest",
-        "webRequestBlocking"
-    ]
+  "name": "NVV",
+  "version": "2.0.0",
+  "manifest_version": 2,
+  "description": "no vip videos",
+  "browser_action": {
+    "default_title": "NVV"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://v.qq.com/x/cover/*",
+        // "https://www.iqiyi.com/*",
+        "https://www.mgtv.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "background": {
+    "persistent": true,
+    "scripts": ["background.js"]
+  },
+  "permissions": [
+    "*://*/*",
+    "tabs",
+    "activeTab",
+    "background",
+    "downloads",
+    "cookies",
+    "storage",
+    "unlimitedStorage",
+    "notifications",
+    "webRequest",
+    "webRequestBlocking"
+  ]
 }
