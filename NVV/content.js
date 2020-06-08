@@ -30,19 +30,23 @@ function qq() {
 }
 
 function iqiyi() {
-  //   const aList = document.querySelectorAll(".play-list-item");
-  //   console.log(aList);
-  //   Array.from(aList).forEach((node) => {
-  //     node.onclick = function (e) {
-  //       setTimeout(() => {
-  //         window.location.reload();
-  //       }, 200);
-  //     };
-  //   });
+  listenDom(
+    () => {
+      const aList = document.querySelectorAll(".play-list-item");
+      return aList.length ? aList : null;
+    },
+    (aList) => {
+      Array.from(aList).forEach((node) => {
+        node.addEventListener("click", function (e) {
+          setTimeout(() => {
+            location.reload();
+          }, 500);
+        });
+      });
+    }
+  );
+  console.log(aList);
 
-  listenUrlChange(() => {
-    location.reload();
-  });
   //   爱奇艺的视频和音频貌似分离了，只能通过暂停他的播放器，来避免声音继续播放
   listenDom(
     () => document.getElementsByTagName("video")[0],
@@ -56,17 +60,25 @@ function iqiyi() {
 }
 
 function mangGuoTV() {
-  const aList = document.querySelectorAll("li.variety-column-series a");
-
-  Array.from(aList).forEach((node) => {
-    node.onclick = function (e) {
-      location.assign(node.href);
-    };
-  });
-  const vipUrl = URL + getCurUrl();
+  listenDom(
+    () => {
+      const aList = document.querySelectorAll("li.variety-column-series a.screenshot");
+      return aList.length ? aList : null;
+    },
+    (aList) => {
+      Array.from(aList).forEach((node) => {
+        node.addEventListener("click", function (e) {
+          setTimeout(location.reload, 500);
+        });
+      });
+    }
+  );
 
   listenDom(
-    () => document.querySelector("#mgtv-player-wrap"),
+    () => {
+      const dom = document.querySelector("#mgtv-player-wrap");
+      return dom && dom.parentNode ? dom : null;
+    },
     (dom) => {
       //   const wrapper = document.createElement("div");
       //   wrapper.style.height = "100%";
@@ -74,10 +86,12 @@ function mangGuoTV() {
       //   wrapper.style.position = "absolute";
       //   wrapper.style.top = "0";
       //   wrapper.style.zIndex = "999";
+      const vipUrl = URL + getCurUrl();
 
       dom.parentNode.innerHTML = `<iframe id="mainIframe" height="100%" width="100%" name="mainIframe" style="position:absolute; top:0;z-index:999;" src=${vipUrl} frameborder="0" scrolling="auto" allowfullscreen ></iframe>`;
       //   删除原视频和音频
       setTimeout(() => {
+        console.log(dom.parentNode, "sadfsfasdf");
         dom.parentNode.removeChild(dom);
       }, 500);
     }
@@ -94,6 +108,11 @@ function listenDom(getDom, callback) {
     }
   }, 500);
 }
+
+// function domObserver(getDom, callback){
+//     const
+
+// }
 
 function listenUrlChange(callback) {
   window.onhashchange = callback;
