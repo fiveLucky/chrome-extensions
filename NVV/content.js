@@ -68,7 +68,7 @@ function mangGuoTV() {
     (aList) => {
       Array.from(aList).forEach((node) => {
         node.addEventListener("click", function (e) {
-          setTimeout(location.reload, 500);
+          setTimeout(() => location.reload(), 500);
         });
       });
     }
