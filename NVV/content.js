@@ -4,7 +4,13 @@ const CURRENT_URL = location.href;
 
 const URL = "https://api.v6.chat/?url=";
 
-const [iqiyiDomain, qqDomain, mangGuoDomain] = ["www.iqiyi.com", "v.qq.com", "mgtv.com"];
+const [iqiyiDomain, qqDomain, mangGuoDomain, bilibiliDomain, youkuDomain] = [
+  "www.iqiyi.com",
+  "v.qq.com",
+  "mgtv.com",
+  "bilibili.com",
+  "v.youku.com",
+];
 
 if (getCurUrl().includes(qqDomain)) {
   qq();
@@ -14,6 +20,12 @@ if (getCurUrl().includes(qqDomain)) {
 // }
 if (getCurUrl().includes(mangGuoDomain)) {
   mangGuoTV();
+}
+if (getCurUrl().includes(bilibiliDomain)) {
+  bilibili();
+}
+if (getCurUrl().includes(youkuDomain)) {
+  youku();
 }
 
 function qq() {
@@ -96,6 +108,17 @@ function mangGuoTV() {
       }, 500);
     }
   );
+}
+
+function bilibili() {
+  const vipUrl = URL + getCurUrl();
+  const i = document.getElementById("bofqi");
+  i.innerHTML = `<iframe id="mainIframe" height="100%" width="100%" name="mainIframe" src=${vipUrl} frameborder="0" scrolling="auto" allowfullscreen ></iframe>`;
+}
+function youku() {
+  const vipUrl = URL + getCurUrl();
+  const i = document.getElementById("ykPlayer");
+  i.innerHTML = `<iframe id="mainIframe" height="100%" width="100%" name="mainIframe" src=${vipUrl} frameborder="0" scrolling="auto" allowfullscreen ></iframe>`;
 }
 
 function listenDom(getDom, callback) {

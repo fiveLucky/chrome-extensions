@@ -11,7 +11,9 @@
       "matches": [
         "https://v.qq.com/x/cover/*",
         // "https://www.iqiyi.com/*",
-        "https://www.mgtv.com/*"
+        "https://www.mgtv.com/*",
+        "https://www.bilibili.com/*",
+        "https://v.youku.com/*"
       ],
       "js": ["content.js"],
       "run_at": "document_end"
