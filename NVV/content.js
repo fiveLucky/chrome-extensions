@@ -37,7 +37,7 @@ function qq() {
     };
   });
   const vipUrl = URL + getCurUrl();
-  const i = document.getElementById("mod_player");
+  const i = document.getElementById("player");
   i.innerHTML = `<iframe id="mainIframe" height="100%" width="100%" name="mainIframe" src=${vipUrl} frameborder="0" scrolling="auto" allowfullscreen ></iframe>`;
 }
 
